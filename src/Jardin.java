@@ -35,18 +35,38 @@ public class Jardin {
     }
 
     public void semer() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Quel est la position X?");
+        int x = sc.nextInt();
+        System.out.println("Quel est la position Y?");
+        int y = sc.nextInt();
+        System.out.println("Quel est le végétal ? 1 - Ail | 2 - Betterave | 3 - Carotte | 4 - Tomate");
+        int numVeg = sc.nextInt();
 
-        System.out.println("Entrez la position x de l'emplacement : ");
-        int x = scanner.nextInt();
+        Vegetal vegetal = null;
+        String choix = "";
 
-        System.out.println("Entrez la position y de l'emplacement : ");
-        int y = scanner.nextInt();
-
-        System.out.println("Choisissez le végétal que vous souhaitez semer (Ail, Betterave, Carotte ou Tomate) : ");
-        String choix = scanner.next();
-
-        Vegetal vegetal = Vegetal.creerVegetal(choix);
+        switch (numVeg) {
+            case 1:
+                vegetal = new Ail();
+                choix = "Ail";
+                break;
+            case 2:
+                vegetal = new Betterave();
+                choix = "Betterave";
+                break;
+            case 3:
+                vegetal = new Carotte();
+                choix = "Carotte";
+                break;
+            case 4:
+                vegetal = new Tomate();
+                choix = "Tomate";
+                break;
+            default:
+                System.out.println("Végétal non reconnu !");
+                return;
+        }
 
         if (vegetal == null) {
             return; // Sortir de la méthode si le choix du végétal n'est pas valide
@@ -101,17 +121,26 @@ public class Jardin {
                 Emplacement emplacement = emplacements[x][y];
                 if (emplacement != null) {
                     Vegetal vegetal = emplacement.getVegetal();
-                    if (vegetal instanceof IRacePure racePureVegetal) {
+
+                    // Vérifier si le végétal est de type IRacePure (race pure)
+                    if (vegetal instanceof IRacePure) {
+                        IRacePure racePureVegetal = (IRacePure) vegetal;
                         racePureVegetal.seReproduire(panier);
-                    } else if (vegetal != null) {
+                    }
+                    // Vérifier si le végétal est de type IOgm (OGM)
+                    else if (vegetal instanceof IOgm) {
                         IOgm ogmVegetal = (IOgm) vegetal;
                         AbstractMap.SimpleEntry<Integer, Integer> coordinates = ogmVegetal.seDupliquer(longueur, largeur);
                         int newX = coordinates.getKey();
                         int newY = coordinates.getValue();
                         if (emplacements[newX][newY] == null) {
+                            // Modifier l'état du végétal OGM pour qu'il se sème à l'état de graine
+                            vegetal.setEtat(Etat.GRAINE);
                             emplacements[newX][newY] = new Emplacement(vegetal);
                         }
                     }
+
+                    // Récolter le végétal
                     emplacements[x][y] = null;
                 }
             }

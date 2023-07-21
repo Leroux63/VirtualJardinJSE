@@ -6,7 +6,7 @@ import Flore.Interfaces.IRacePure;
 import java.util.AbstractMap;
 import java.util.HashMap;
 
-public class Tomate extends Vegetal implements IRacePure, IOgm {
+public class Tomate extends Vegetal implements IOgm {
 
     public Tomate() {
         super();
@@ -21,8 +21,5 @@ public class Tomate extends Vegetal implements IRacePure, IOgm {
         return new AbstractMap.SimpleEntry<>(x, y);
     }
 
-    @Override
-    public void seReproduire(HashMap<String, Integer> panier) {
-        panier.put("Tomate", panier.getOrDefault("Tomate", 0) + 1);
-    }
+
 }

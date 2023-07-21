@@ -2,6 +2,9 @@ package Flore;
 
 public class Vegetal {
     protected char[] dessin ;
+
+
+
     private Etat etat;
 
     public Vegetal() {
@@ -14,21 +17,7 @@ public class Vegetal {
         etat = Etat.GRAINE; // Lorsque le végétal est semé, il est à l'état de graine
     }
 
-    public static Vegetal creerVegetal(String choix) {
-        switch (choix.toLowerCase()) {
-            case "ail":
-                return new Ail();
-            case "betterave":
-                return new Betterave();
-            case "carotte":
-                return new Carotte();
-            case "tomate":
-                return new Tomate();
-            default:
-                System.out.println("Végétal non reconnu !");
-                return null; // Renvoyer null en cas de choix invalide
-        }
-    }
+
 
     public void grandir() {
         if (this.etat != Etat.MORT) {
@@ -49,5 +38,9 @@ public class Vegetal {
 
     public Etat getEtat() {
         return etat;
+    }
+
+    public void setEtat(Etat etat) {
+        this.etat = etat;
     }
 }
